@@ -5,34 +5,22 @@ const inputEl = document.getElementById("input-el");
 const ulEl = document.querySelector("#ul-el");
 let error = document.querySelector("#error");
 const deleteBtn = document.querySelector("#delete-btn");
+const tabBtn = document.querySelector("#tab-btn");
 
 const leadsFromLocalStorage = JSON.parse(localStorage.getItem("myLeads"));
+const tabs = [{ url: "https://www.linkedin.com/in/oliullahjewel/" }];
 
 if (leadsFromLocalStorage) {
     myLeads = leadsFromLocalStorage;
-    renderLists();
-}
-
-deleteBtn.addEventListener("dblclick", clearStorage);
-
-function clearStorage() {
-    localStorage.clear();
-    myLeads = [];
-    renderLists();
+    render(myLeads);
 }
 saveBtn.addEventListener("click", toSaveLinks);
+tabBtn.addEventListener("click", saveTab);
+deleteBtn.addEventListener("dblclick", clearStorage);
 
-function toSaveLinks() {
-    myLeads.push(inputEl.value);
-    localStorage.setItem("myLeads", JSON.stringify(myLeads));
-    renderLists();
-
-    inputEl.value = "";
-}
-
-function renderLists() {
+function render(leads) {
     let listItems = "";
-    for (item = 0; item < myLeads.length; item++) {
+    for (item = 0; item < leads.length; item++) {
         // ulEl.innerHTML += "<li>" + myLeads[item] + "</li>";
 
         // const li = document.createElement("li");
@@ -41,12 +29,30 @@ function renderLists() {
 
         listItems += `
         <li>
-             <a href="${myLeads[item]}" target="_blank">
-             ${myLeads[item]}
+             <a href="${leads[item]}" target="_blank">
+             ${leads[item]}
              </a>
              
         </li>`;
     }
 
     ulEl.innerHTML = listItems;
+}
+
+function clearStorage() {
+    localStorage.clear();
+    myLeads = [];
+    render(myLeads);
+}
+
+function saveTab() {
+    console.log(tabs[0].url);
+}
+
+function toSaveLinks() {
+    myLeads.push(inputEl.value);
+    localStorage.setItem("myLeads", JSON.stringify(myLeads));
+    render(myLeads);
+
+    inputEl.value = "";
 }
