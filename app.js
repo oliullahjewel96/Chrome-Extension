@@ -8,7 +8,6 @@ const deleteBtn = document.querySelector("#delete-btn");
 const tabBtn = document.querySelector("#tab-btn");
 
 const leadsFromLocalStorage = JSON.parse(localStorage.getItem("myLeads"));
-const tabs = [{ url: "https://www.linkedin.com/in/oliullahjewel/" }];
 
 if (leadsFromLocalStorage) {
     myLeads = leadsFromLocalStorage;
@@ -46,7 +45,13 @@ function clearStorage() {
 }
 
 function saveTab() {
-    console.log(tabs[0].url);
+    // console.log(tabs[0].url);
+
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        myLeads.push(tabs[0].url);
+        localStorage.setItem("myLeads", JSON.stringify(myLeads));
+        render(myLeads);
+    });
 }
 
 function toSaveLinks() {
